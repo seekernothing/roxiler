@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:7777/api",
-  withCredentials: true, // cookie ke liye ZAROORI
+  baseURL: import.meta.env.VITE_API_URL ,
+  withCredentials: true, 
 });
 
 export default api;

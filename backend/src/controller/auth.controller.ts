@@ -1,7 +1,8 @@
 import type { Request, Response } from "express";
 import authService from "../services/auth.service";
-import { signupSchema ,loginSchema} from "../validations/schemas";
+import { signupSchema ,loginSchema,updatePasswordSchema} from "../validations/schemas";
 import { appError } from "../types";
+import { UserRequest } from "../types";
 
 const authController = {
 
@@ -32,6 +33,20 @@ const authController = {
 
 async logout(req: Request, res: Response) {
   res.clearCookie("token").json({ message: "Logged out successfully" });
+},
+
+async getMe(req: UserRequest, res: Response) {
+  const user = await authService.getMe(req.userId!);
+  res.json({ user });
+},
+
+async updatePassword(req: UserRequest, res: Response) {
+  const parsed = updatePasswordSchema.safeParse(req.body);
+  if (!parsed.success) {
+    throw new appError(parsed.error.issues[0]?.message ?? "Invalid inputs", 400);
+  }
+  await authService.updatePassword(req.userId!, parsed.data.oldPassword, parsed.data.newPassword);
+  res.json({ message: "Password updated successfully" });
 },
 };
 

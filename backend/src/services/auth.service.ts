@@ -31,6 +31,24 @@ const authService = {
   );
   return { token, role: user.role };
 },
+
+async getMe(userId: number) {
+  return prisma.user.findUnique({
+    where: { id: userId },
+    select: { id: true, name: true, email: true, address: true, role: true },
+  });
+},
+
+async updatePassword(userId: number, oldPassword: string, newPassword: string) {
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (!user) throw new appError("User not found", 404);
+
+  const isMatch = await bcrypt.compare(oldPassword, user.password);
+  if (!isMatch) throw new appError("Old password is incorrect", 401);
+
+  const hashed = await bcrypt.hash(newPassword, 10);
+  await prisma.user.update({ where: { id: userId }, data: { password: hashed } });
+},
 };
 
 export default authService;

@@ -2,6 +2,8 @@ import express from "express";
 import authRouter from "./routes/auth.routes";
 import cookieParser from "cookie-parser";
 import cors from "cors"
+import errorHandler from "./middlewares/error.middleware";
+
 
 
 const app = express();
@@ -20,5 +22,9 @@ app.use("/api/auth", authRouter);
 app.get("/", (req, res) => {
   res.json({ message: "Store Rating API running" });
 });
+
+app.use(errorHandler);
+
+
 
 export default app;

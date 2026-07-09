@@ -7,7 +7,10 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Register from "./pages/Register";
 import Settings from "./pages/Settings";
-
+import UserDashboard from "./pages/user/UserDashboard";
+import Dashboard from "./pages/admin/Dashboard";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminStores from "./pages/admin/AdminStores";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -57,6 +60,43 @@ function App() {
     </ProtectedRoute>
   }
 />
+
+<Route
+  path="/stores"
+  element={
+    <ProtectedRoute allowedRoles={["USER"]}>
+      <UserDashboard />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin"
+  element={
+    <ProtectedRoute allowedRoles={["ADMIN"]}>
+      <Dashboard />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/users"
+  element={
+    <ProtectedRoute allowedRoles={["ADMIN"]}>
+      <AdminUsers />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/stores"
+  element={
+    <ProtectedRoute allowedRoles={["ADMIN"]}>
+      <AdminStores />
+    </ProtectedRoute>
+  }
+/>
+
     </Routes>
   );
 }

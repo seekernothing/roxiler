@@ -6,6 +6,10 @@ import errorHandler from "./middlewares/error.middleware";
 import authMiddleware from "./middlewares/auth.middleware";
 import checkRole from "./middlewares/role.middleware";
 import adminRouter from "./routes/admin.routes";
+import storeRouter from "./routes/store.routes";
+import ratingRouter from "./routes/rating.routes";
+
+
 
 
 
@@ -21,6 +25,10 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
 app.use("/api/admin", authMiddleware, checkRole("ADMIN"), adminRouter);
+app.use("/api/stores", authMiddleware, storeRouter);
+app.use("/api/rating", authMiddleware, ratingRouter);
+
+
 
 
 

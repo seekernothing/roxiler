@@ -36,8 +36,13 @@ export const addStoreSchema = z.object({
   ownerId: z.number().int(),
 });
 
+export const ratingSchema = z.object({
+  value: z.number().int().min(1, "Rating must be 1-5").max(5, "Rating must be 1-5"),
+});
+
 export type SignupInput = z.infer<typeof signupSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type UpdatePasswordInput = z.infer<typeof updatePasswordSchema>
 export type AddUserInput = z.infer<typeof addUserSchema>
 export type AddStoreInput = z.infer<typeof addStoreSchema>
+export type RatingInput = z.infer<typeof ratingSchema>

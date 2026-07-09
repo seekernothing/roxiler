@@ -1,3 +1,4 @@
+
 import { z } from "zod";
 
 export const passwordSchema = z
@@ -24,6 +25,19 @@ export const updatePasswordSchema = z.object({
   newPassword: passwordSchema,
 });
 
+export const addUserSchema = signupSchema.extend({
+  role: z.enum(["ADMIN", "USER", "OWNER"]).default("USER"),
+});
+
+export const addStoreSchema = z.object({
+  name: z.string().trim().min(1).max(60),
+  email: z.string().trim().toLowerCase().email(),
+  address: z.string().max(400),
+  ownerId: z.number().int(),
+});
+
 export type SignupInput = z.infer<typeof signupSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type UpdatePasswordInput = z.infer<typeof updatePasswordSchema>
+export type AddUserInput = z.infer<typeof addUserSchema>
+export type AddStoreInput = z.infer<typeof addStoreSchema>

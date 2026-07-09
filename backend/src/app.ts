@@ -3,6 +3,10 @@ import authRouter from "./routes/auth.routes";
 import cookieParser from "cookie-parser";
 import cors from "cors"
 import errorHandler from "./middlewares/error.middleware";
+import authMiddleware from "./middlewares/auth.middleware";
+import checkRole from "./middlewares/role.middleware";
+import adminRouter from "./routes/admin.routes";
+
 
 
 
@@ -16,6 +20,9 @@ app.use(cookieParser());
 
 
 app.use("/api/auth", authRouter);
+app.use("/api/admin", authMiddleware, checkRole("ADMIN"), adminRouter);
+
+
 
 
 

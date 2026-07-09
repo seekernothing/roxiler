@@ -19,5 +19,11 @@ export const loginSchema = z.object({
   password: z.string().min(1),
 });
 
+export const updatePasswordSchema = z.object({
+  oldPassword: z.string().min(1),
+  newPassword: passwordSchema,
+});
+
 export type SignupInput = z.infer<typeof signupSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
+export type UpdatePasswordInput = z.infer<typeof updatePasswordSchema>

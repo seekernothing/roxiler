@@ -28,6 +28,28 @@ const storeService = {
       };
     });
   },
+
+  async ownerDashboard(ownerId: number) {
+  const store = await prisma.store.findUnique({
+    where: { ownerId },
+    include: {
+      ratings: { include: { user: { select: { name: true, email: true } } } },
+    },
+  });
+  if (!store) return null;
+
+  return {
+    storeName: store.name,
+    averageRating: store.ratings.length
+      ? Number((store.ratings.reduce((sum, r) => sum + r.value, 0) / store.ratings.length).toFixed(1))
+      : null,
+    raters: store.ratings.map((r) => ({
+      userName: r.user.name,
+      email: r.user.email,
+      rating: r.value,
+    })),
+  };
+},
 };
 
 export default storeService;
